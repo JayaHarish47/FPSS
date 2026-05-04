@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<html xmlns:th="https://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'owners')}">
+
+<body>
+
+<h2>Contracts</h2>
+
+<div th:each="owner : ${listContracts}">
+
+<table id="owners" class="table table-striped">
+  <thead>
+  <tr>
+    <th style="width: 150px;">Name</th>
+    <th style="width: 200px;">Description</th>
+    <th style="width: 120px">basePrice</th>
+    <th>Used Items</th>
+      <th>SUM</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="contract : ${owner.bookedServices}">
+      <td th:text="${contract.name}"/>
+      <td th:text="${contract.description}"/>
+      <td th:text="${contract.basePrice}"/>
+      <td th:text="${contract.usedItems.size()}"/>
+      <td>0 €</td>
+  </tr>
+  </tbody>
+</table>
+
+</div>
+
+</body>
+</html>
+
