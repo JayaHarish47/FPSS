@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+  th:replace="~{fragments/layout :: layout (~{::body},'owners')}">
+<body>
+  <h2>Add Item to Contract</h2>
+  <form th:action="@{/contracts/{contractId}/addItem (contractId=${param.contractId})}" method="post">
+    <select name="itemId" class="form-control">
+      <option th:each="item : ${items}" th:value="${item.id}" th:text="${item.description + ' (' + ${item.price} + '€)'}"></option>
+    </select>
+    <button type="submit" class="btn btn-primary">Add Item</button>
+  </form>
+</body>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+  th:replace="~{fragments/layout :: layout (~{::body},'owners')}">
+<body>
+  <h2>New Contract</h2>
+
+  <form th:object="${contract}" method="post" class="form-horizontal"
+        th:action="@{/owners/{ownerId}/contracts(ownerId=${ownerId})}">
+
+    <div th:if="${#fields.hasGlobalErrors()}">
+      <p class="alert alert-danger" th:each="err : ${#fields.allGlobalErrors()}" th:text="${err}"></p>
+    </div>
+
+    <input th:replace="~{fragments/inputField :: input ('Contract Name', 'name', 'text')}" />
+    <input th:replace="~{fragments/inputField :: input ('Description', 'description', 'text')}" />
+    <div class="form-group">
+  <label class="col-sm-2 control-label">Base Price (€)</label>
+  <div class="col-sm-10">
+    <input type="number" step="0.01" class="form-control" th:field="*{basePrice}" required />
+  </div>
+</div>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Add Items</label>
+      <div class="col-sm-10">
+        <select name="itemIds" multiple="multiple" class="form-control">
+          <option th:each="item : ${storage.findAll()}" th:value="${item.id}" th:text="${item.description}"></option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+  <label class="col-sm-2 control-label">Vet</label>
+  <div class="col-sm-10">
+    <select name="vetId" class="form-control">
+      <option value="">-- Select Vet --</option>
+      <option th:each="vet : ${vets}"
+              th:value="${vet.id}"
+              th:text="${vet.firstName + ' ' + vet.lastName}">
+      </option>
+    </select>
+  </div>
+</div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button class="btn btn-default" type="submit">Add Contract</button>
+      </div>
+    </div>
+  </form>
+
+  <a th:href="@{/owners/{ownerId}(ownerId=${param.ownerId})}">Cancel</a>
+</body>
+</html>

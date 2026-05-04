@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'contract')}">
+<body>
+  <h2>Contract Details</h2>
+  <div th:if="${contract}">
+    <p><strong>Name:</strong> <span th:text="${contract.name}"></span></p>
+    <p><strong>Description:</strong> <span th:text="${contract.description}"></span></p>
+    <p><strong>Base Price:</strong> <span th:text="${contract.basePrice} + ' €'"></span></p>
+<p><strong>Vet:</strong>
+    <span th:if="${contract.vet}" th:text="${contract.vet.firstName + ' ' + contract.vet.lastName}"></span>
+    <span th:unless="${contract.vet}">No vet assigned</span>
+</p>
+    <h3>Used Items (<span th:text="${contract.usedItems.size()}"></span>)</h3>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="usedItem : ${contract.usedItems}">
+          <td th:text="${usedItem.description}"></td>
+          <td th:text="${usedItem.price} + ' €'"></td>
+        </tr>
+        <tr th:if="${contract.usedItems.isEmpty()}">
+          <td colspan="2">No used items</td>
+        </tr>
+      </tbody>
+    </table>
+    <p><strong>Total Sum:</strong> <span th:text="${contract.basePrice + #aggregates.sum(contract.usedItems.![price])} + ' €'"></span></p>
+    <a th:href="@{/contracts.html}">← Back to contracts</a>
+  </div>
+  <div th:unless="${contract}" class="alert alert-warning">Contract not found</div>
+</body>
+</html>
